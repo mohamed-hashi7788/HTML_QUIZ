@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Quiz</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #b6f0f7, #f5c0e6);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 10px;
+            font-weight: bold;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .correct-answers {
+            margin-top: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ff6347;
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: absolute;
+            top: -100px;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            animation: fall 5s infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Confetti Variants */
+        .confetti:nth-child(odd) {
+            background-color: yellow;
+            animation-duration: 4s;
+        }
+
+        .confetti:nth-child(even) {
+            background-color: blue;
+            animation-duration: 6s;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>HTML Quiz</h1>
+    <form id="quizForm">
+        <label>1. What does HTML stand for?</label>
+        <input type="radio" name="q1" value="wrong">Home Tool Markup Language<br>
+        <input type="radio" name="q1" value="wrong">Hyperlinks and Text Markup Language<br>
+        <input type="radio" name="q1" value="correct">Hyper Text Markup Language<br>
+
+        <label>2. Who is making the Web standards?</label>
+        <input type="radio" name="q2" value="wrong">Google<br>
+        <input type="radio" name="q2" value="correct">The World Wide Web Consortium<br>
+        <input type="radio" name="q2" value="wrong">Microsoft<br>
+
+        <label>3. Choose the correct HTML element for the largest heading:</label>
+        <input type="radio" name="q3" value="wrong">&lt;h3&gt;<br>
+        <input type="radio" name="q3" value="correct">&lt;h1&gt;<br>
+        <input type="radio" name="q3" value="wrong">&lt;head&gt;<br>
+
+        <label>4. What is the correct HTML element for inserting a line break?</label>
+        <input type="radio" name="q4" value="wrong">&lt;brk&gt;<br>
+        <input type="radio" name="q4" value="correct">&lt;br&gt;<br>
+        <input type="radio" name="q4" value="wrong">&lt;lb&gt;<br>
+
+        <label>5. How can you make a numbered list?</label>
+        <input type="radio" name="q5" value="correct">&lt;ol&gt;<br>
+        <input type="radio" name="q5" value="wrong">&lt;ul&gt;<br>
+        <input type="radio" name="q5" value="wrong">&lt;list&gt;<br>
+
+        <button type="button" onclick="submitQuiz()">Submit Quiz</button>
+    </form>
+
+    <div class="result" id="result"></div>
+    <div class="correct-answers" id="correctAnswers"></div>
+
+    <script>
+        function submitQuiz() {
+            let score = 0;
+            const totalQuestions = 5;
+
+            // Get form data
+            const form = document.forms["quizForm"];
+            const answers = ["q1", "q2", "q3", "q4", "q5"];
+
+            // Calculate score
+            answers.forEach((question, index) => {
+                const selected = form[question].value;
+                if (selected === "correct") {
+                    score++;
+                }
+            });
+
+            // Display score
+            const resultDiv = document.getElementById("result");
+            resultDiv.style.display = "block";
+            resultDiv.innerHTML = `Congratulations! You scored ${score} out of ${totalQuestions}!`;
+
+            // Display correct answers
+            const correctAnswersDiv = document.getElementById("correctAnswers");
+            correctAnswersDiv.style.display = "block";
+            correctAnswersDiv.innerHTML = `
+                <p>The correct answers are:</p>
+                <ul>
+                    <li>1. Hyper Text Markup Language</li>
+                    <li>2. The World Wide Web Consortium</li>
+                    <li>3. &lt;h1&gt;</li>
+                    <li>4. &lt;br&gt;</li>
+                    <li>5. &lt;ol&gt;</li>
+                </ul>
+            `;
+
+            // Trigger confetti animation
+            for (let i = 0; i < 100; i++) {
+                createConfetti();
+            }
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement("div");
+            confetti.classList.add("confetti");
+
+            // Set random position and size
+            confetti.style.left = Math.random() * window.innerWidth + "px";
+            confetti.style.width = Math.random() * 10 + 5 + "px";
+            confetti.style.height = confetti.style.width;
+
+            // Append to body
+            document.body.appendChild(confetti);
+
+            // Remove confetti after animation ends
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }
+    </script>
+</body>
+
+</html>
